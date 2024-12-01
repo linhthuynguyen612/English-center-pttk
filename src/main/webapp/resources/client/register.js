@@ -238,20 +238,17 @@ $(document).ready(() => {
                     row.appendChild(cell4);
 
                     var cell5 = document.createElement("td");
-                    cell5.innerText = new Date(lophoc.startDate).toLocaleDateString();
+                    cell5.innerText = new Date(lophoc.startDate).toLocaleDateString('vi-VN', {day: '2-digit', month: '2-digit', year: 'numeric'});
                     row.appendChild(cell5);
 
                     var cell6 = document.createElement("td");
-                    cell6.innerText = lophoc.startDate;
-                    row.appendChild(cell6);
-
-                    var cell7 = document.createElement("td");
                     var link = document.createElement("a");
                     link.href = "#";
                     link.className = "schedule-registration";
-                    link.dataset.lophocName = lophoc.name;
+                    link.setAttribute('data-lophoc-name', lophoc.name);
                     link.innerText = "Lịch học";
-                    row.appendChild(cell7);
+                    cell6.appendChild(link); // Thiếu dòng này - cần thêm link vào cell6
+                    row.appendChild(cell6);
 
                     cartContent.appendChild(row);
                 });

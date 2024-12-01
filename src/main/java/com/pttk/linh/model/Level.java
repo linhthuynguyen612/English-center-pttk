@@ -31,7 +31,7 @@ public class Level {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
-    @JsonIgnore
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "levels" }) // thay vì @JsonIgnore
     private Course course;
 
     @OneToMany(mappedBy = "level")

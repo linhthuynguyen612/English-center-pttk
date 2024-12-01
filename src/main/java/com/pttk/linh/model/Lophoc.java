@@ -1,6 +1,8 @@
 package com.pttk.linh.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +43,7 @@ public class Lophoc {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
-    @JsonIgnore
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "lophocs" }) // thay vì @JsonIgnore
     private Level level;
 
     @OneToMany(mappedBy = "lophoc")

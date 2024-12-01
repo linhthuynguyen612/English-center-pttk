@@ -17,13 +17,16 @@ import java.util.List;
 public class HomepageController {
     private final MemberDAO memberDAO;
     private final RegistrationDAO registrationDAO;
-//    private final
+    // private final
 
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
         Member currentMember = (Member) session.getAttribute("currentMember");
         if (currentMember == null) {
             return "redirect:/login";
+        }
+        if (currentMember.getRole().equals("receptionist")) {
+            return "redirect:/receptionist";
         }
         List<Registration> registrations = this.registrationDAO.findByMemberId(currentMember.getId());
         model.addAttribute("currentMember", currentMember);
@@ -32,7 +35,14 @@ public class HomepageController {
     }
 
     @GetMapping("/receptionist")
-    public String receptionist(Model model) {
+    public String receptionist(Model model, HttpSession session) {
+        Member currentMember = (Member) session.getAttribute("currentMember");
+        if (currentMember == null) {
+            return "redirect:/login";
+        }
+        if (!currentMember.getRole().equals("receptionist")) {
+            return "redirect:/";
+        }
         return "client/receptionist/show";
     }
 }

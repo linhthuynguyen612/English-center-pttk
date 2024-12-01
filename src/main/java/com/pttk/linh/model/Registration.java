@@ -30,8 +30,9 @@ public class Registration {
     @JoinColumn(name = "lophoc_id")
     private Lophoc lophoc;
 
-    @OneToMany(mappedBy = "registration")
-    private List<Bill> bills;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bill_id")
+    private Bill bill;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

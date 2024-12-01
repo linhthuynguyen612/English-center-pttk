@@ -52,8 +52,8 @@
                     <c:forEach var="registration" items="${registrations}" varStatus="status">
                         <tr>
                             <td>${status.count}</td>
-                            <td>${registration.lophoc.level.course.name}</td>
-                            <td>${registration.lophoc.startDate}</td>
+                            <td>${registration.lophoc.name}</td>
+                            <td><fmt:formatDate pattern="dd/MM/yyyy" value="${registration.lophoc.startDate}"/></td>
                             <td>Offline</td>
                             <td>${registration.lophoc.fee}</td>
                             <td>
@@ -63,12 +63,15 @@
                             </td>
                         </tr>
                     </c:forEach>
-
+                    <tr></tr>
+                        <td colspan="4">Tổng học phí:</td>
+                        <td>${total}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
             <div class="d-flex justify-content-between">
-                <button class="btn btn-primary">Trở về</button>
+                <button class="btn btn-primary" onclick="window.location.href='/student/registration'">Trở về</button>
                 <button class="btn btn-success" id="confirm-btn">Xác nhận</button>
             </div>
         </div>
@@ -93,9 +96,8 @@
         confirmBtn.addEventListener('click', function () {
             const registrations = [];
             document.querySelectorAll('.btn-delete').forEach(button => {
-                const registrationId = button.getAttribute('data-id');
-                console.log("id: " + registrationId);
-                registrations.push({ id: registrationId });
+                const index = button.getAttribute('data-index');
+                registrations.push(index);
             });
             addRegistrations(registrations);
         });

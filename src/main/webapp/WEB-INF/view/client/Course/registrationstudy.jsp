@@ -149,7 +149,6 @@
                                 <th>Chương trình</th>
                                 <th>Mức độ</th>
                                 <th>Lớp</th>
-                                <th>Ngày đăng ký</th>
                                 <th>Khai giảng</th>
                                 <th>Lịch học</th>
                             </tr>
@@ -169,62 +168,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Get levels by course
-        $(document).on('click', '#cart', function(event) {
-            $.ajax({
-                url: '/api/class-add-to-cart',
-                type: 'GET',
-                success: function (data) {
-                    var cartContent = document.getElementById("cartContent");
-                    cartContent.innerHTML = ""; // Clear existing content
-                    data.forEach((lophoc, index) => {
-                        var row = document.createElement("tr");
 
-                        var cell1 = document.createElement("td");
-                        cell1.innerText = index + 1;
-                        row.appendChild(cell1);
-
-                        var cell2 = document.createElement("td");
-                        cell2.innerText = lophoc.level.name;
-                        row.appendChild(cell2);
-
-                        var cell3 = document.createElement("td");
-                        cell3.innerText = lophoc.level.name;
-                        row.appendChild(cell3);
-
-                        var cell4 = document.createElement("td");
-                        cell4.innerText = lophoc.name;
-                        row.appendChild(cell4);
-
-                        var cell5 = document.createElement("td");
-                        cell5.innerText = new Date(lophoc.startDate).toLocaleDateString();
-                        row.appendChild(cell5);
-
-                        var cell6 = document.createElement("td");
-                        cell6.innerText = lophoc.startDate;
-                        row.appendChild(cell6);
-
-                        var cell7 = document.createElement("td");
-                        var link = document.createElement("a");
-                        link.href = "#";
-                        link.className = "schedule-registration";
-                        link.dataset.lophocName = lophoc.name;
-                        link.innerText = "Lịch học";
-                        row.appendChild(cell7);
-
-                        cartContent.appendChild(row);
-                    });
-                    $('#cartModal').modal('show');
-                },
-                error: function (error) {
-                    console.error('Error fetching cart data:', error);
-                }
-            });
-        });
-    });
-</script>
 <script src="/client/register.js"></script>
 </body>
 </html>
