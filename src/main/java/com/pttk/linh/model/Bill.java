@@ -6,34 +6,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
 import java.util.Date;
-import java.util.List;
-import java.util.Timer;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "registration")
-public class Registration {
-
+@Table(name = "bill")
+public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private Time time;
-    private Date date;
+    private String paymentType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lophoc_id")
-    private Lophoc lophoc;
-
-    @OneToMany(mappedBy = "registration")
-    private List<Bill> bills;
+    private Date paymentDate;
+    private double amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "registration_id")
+    private Registration registration;
 }

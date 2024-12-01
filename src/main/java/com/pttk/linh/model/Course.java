@@ -1,5 +1,8 @@
 package com.pttk.linh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,10 +12,12 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +34,7 @@ public class Course {
     private Branch branch;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     private List<Level> levels;
 
-    @OneToMany(mappedBy = "course")
-    private List<Lophoc> lophocs;
 }

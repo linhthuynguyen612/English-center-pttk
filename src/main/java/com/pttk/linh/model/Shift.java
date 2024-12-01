@@ -7,13 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "shift")
 public class Shift {
 
     @Id
@@ -23,8 +26,10 @@ public class Shift {
     @NotNull
     private String name;
 
-    private Date startTime;
-    private Date endTime;
+    @Temporal(TemporalType.TIME)
+    private Time startTime;
+    @Temporal(TemporalType.TIME)
+    private Time endTime;
 
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;

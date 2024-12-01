@@ -1,9 +1,6 @@
 package com.pttk.linh.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "member")
 public class Member {
 
     @Id
@@ -29,10 +29,19 @@ public class Member {
     private String password;
     @NotNull
     private String name;
+    @Temporal(TemporalType.DATE)
     private Date dob;
     private String address;
     private String phone;
 
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
+
+    @OneToMany(mappedBy = "member")
+    private List<Bill> bills;
+
+    @OneToMany(mappedBy = "member")
+    private List<Registration> registrations;
+
+    private String role;
 }
