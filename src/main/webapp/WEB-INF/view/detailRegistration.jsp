@@ -14,7 +14,7 @@
   <div class="container mt-5">
     <!-- Tiêu đề -->
     <h2 class="text-center mb-3">Chi tiết đơn đăng ký</h2>
-    <p class="text-center">Ngày đăng ký: 19/05/2024</p>
+    <p class="text-center">Ngày đăng ký: <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd/MM/yyyy"/></p>
 
     <!-- Thông tin học viên -->
     <div class="mb-4">
@@ -163,7 +163,7 @@
               <td>${status.count}</td>
               <td>${bill.id}</td>
               <td>${bill.paymentDate}</td>
-              <td>${bill.paymentMethod}</td>
+              <td>${bill.paymentType}</td>
               <td>${bill.amount}</td>
             </tr>
           </c:forEach>
@@ -180,13 +180,13 @@
     <div class="mb-4">
       <h5>Phương thức thanh toán:</h5>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment" value="cash" checked>
+        <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment" value="Tiền mặt" checked>
         <label class="form-check-label" for="cashPayment">
           Tiền mặt
         </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="paymentMethod" id="transferPayment" value="transfer">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="transferPayment" value="Chuyển khoản">
         <label class="form-check-label" for="transferPayment">
           Chuyển khoản
         </label>

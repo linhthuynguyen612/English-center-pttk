@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.DateTimeException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,10 +58,14 @@ public class RegisterController {
 
     @PostMapping("/add-to-cart")
     public ResponseEntity<?> addToCart(@RequestBody Map<String, List<String>> payload, HttpSession session) {
+        List<String> classes = payload.get("classes");
+        if (classes == null || classes.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Invalid request payload"));
+        }
+
         Member member = (Member) session.getAttribute("currentMember");
         long memberId = member.getId();
         List<Registration> registrations = this.registrationDAO.findByMemberId(memberId);
-        List<String> classes = payload.get("classes");
         List<Lophoc> lophocAddToCart = new ArrayList<>();
         for (String className : classes) {
             Lophoc lophoc = this.lophocDAO.findByName(className);
@@ -100,6 +105,11 @@ public class RegisterController {
             }
         }
 
+        List<Lophoc> lophocSession = (List<Lophoc>) session.getAttribute("class-add-to-cart");
+        if (lophocSession == null) {
+            lophocSession = new ArrayList<>();
+        }
+        lophocAddToCart.addAll(lophocSession);
         session.setAttribute("class-add-to-cart", lophocAddToCart);
         return ResponseEntity.ok(lophocAddToCart);
     }
@@ -322,6 +332,28 @@ public class RegisterController {
             System.out.println("Error details: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @PostMapping("/api/prepare-registration")
+    public ResponseEntity<?> prepareRegistration(HttpSession session) {
+        List<Lophoc> lophocAddToCart = (List<Lophoc>) session.getAttribute("class-add-to-cart");
+        if (lophocAddToCart == null || lophocAddToCart.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Giỏ hàng trống.");
+        }
+
+        List<Registration> newRegistrations = new ArrayList<>();
+        Member member = (Member) session.getAttribute("currentMember");
+        for (Lophoc lophoc : lophocAddToCart) {
+            Registration registration = new Registration();
+            registration.setMember(member);
+            registration.setLophoc(lophoc);
+            registration.setDate(new Date(System.currentTimeMillis()));
+            registration.setTime(new Time(System.currentTimeMillis()));
+            newRegistrations.add(registration);
+        }
+
+        session.setAttribute("confirm-registration", newRegistrations);
+        return ResponseEntity.ok().build();
     }
 
 }

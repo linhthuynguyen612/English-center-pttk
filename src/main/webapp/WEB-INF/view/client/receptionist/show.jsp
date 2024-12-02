@@ -17,12 +17,16 @@
 
     <!-- Tên lễ tân -->
     <div class="mb-3">
-      <h4>Lễ tân 1</h4>
+      <h4>${currentMember.name}</h4>
     </div>
 
     <!-- Nút Thanh toán học phí -->
-    <div>
-      <a href="/receptionist/search" class="btn btn-primary">Thanh toán học phí</a>
+    <div class="d-flex justify-content-center">
+      <a href="/receptionist/search" class="btn btn-primary me-3">Thanh toán học phí</a>
+      <form method="post" action="/logout" id="logoutForm">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button class="btn btn-danger" type="submit">Đăng xuất</button>
+      </form>
     </div>
   </div>
 

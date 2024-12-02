@@ -130,11 +130,10 @@ public class RegistrationDAO {
 
     public static final String SELECT_UNPAID_REGISTRATIONS = "SELECT r.* FROM registration r LEFT JOIN bill b ON r.id = b.registration_id WHERE b.id IS NULL";
 
-    public static final String SELECT_REMAINING_FEE_BY_REGISTRATION = "SELECT r.id, l.fee - COALESCE(b.amount, 0) as remaining_fee "
-            +
+    public static final String SELECT_REMAINING_FEE_BY_REGISTRATION = "SELECT r.id, " +
+            "CASE WHEN r.bill_id IS NOT NULL THEN 0 ELSE l.fee END as remaining_fee " +
             "FROM registration r " +
             "INNER JOIN lophoc l ON r.lophoc_id = l.id " +
-            "LEFT JOIN bill b ON r.bill_id = b.id " +
             "WHERE r.id = ?";
 
     public double getRemainingFeeByRegistration(long registrationId) {

@@ -95,7 +95,7 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-center gap-3">
-        <button class="btn btn-secondary">Trở về</button>
+        <button class="btn btn-secondary" onclick="window.location.href='/'">Trở về</button>
         <button class="btn btn-info" id="add-to-cart">Thêm vào giỏ</button>
         <button class="btn btn-primary" id="register-now">Đăng ký ngay</button>
     </div>
@@ -160,6 +160,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="registerFromCart">Đăng ký</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>

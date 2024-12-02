@@ -269,4 +269,30 @@ $(document).ready(() => {
         });
     });
 
+    $('#registerFromCart').click(function() {
+        const selectedIndexes = [];
+        $('#cartContent tr').each(function() {
+            const index = $(this).find('td:first').text();
+            selectedIndexes.push(parseInt(index, 10));
+        });
+
+        if (selectedIndexes.length > 0) {
+            // Gọi API để chuẩn bị đăng ký
+            $.ajax({
+                url: '/api/prepare-registration',
+                method: 'POST',
+                success: function() {
+                    // Sau khi chuẩn bị xong, gọi API đăng ký
+                    callApi('/api/registration', selectedIndexes, '/student/registration');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Lỗi khi chuẩn bị đăng ký:', error);
+                    alert('Có lỗi xảy ra khi chuẩn bị đăng ký.');
+                }
+            });
+        } else {
+            alert('Không có lớp học nào được chọn để đăng ký.');
+        }
+    });
+
 });

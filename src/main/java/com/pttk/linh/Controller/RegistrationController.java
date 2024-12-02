@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,16 +89,24 @@ public class RegistrationController {
 
     @GetMapping("/receptionist/detail-registration")
     public String getMethodName(Model model, HttpSession session) {
-        Member member = (Member) session.getAttribute("currentMember");
-        if (member == null) {
+        Member currentMember = (Member) session.getAttribute("currentMember");
+        if (currentMember == null) {
             return "redirect:/login";
         }
-        model.addAttribute("member", member);
+
         List<Registration> selectedRegistrations = (List<Registration>) session.getAttribute("selectedRegistrations");
         model.addAttribute("selectedRegistrations", selectedRegistrations);
+        Member member = selectedRegistrations.get(0).getMember();
         List<Bill> bills = this.billDAO.findByMemberId(member.getId());
         model.addAttribute("bills", bills);
+        model.addAttribute("member", member);
         return "detailRegistration";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("currentMember");
+        return "redirect:/login"; // Chuyển hướng về trang login
     }
 
 }

@@ -60,7 +60,7 @@
 
     <!-- Nút Back và Thanh toán -->
     <div class="text-center mt-3 mb-3">
-      <button type="button" class="btn btn-secondary me-3">Back</button>
+      <button type="button" class="btn btn-secondary me-3" onclick="window.location.href='/receptionist'">Back</button>
       <button type="button" class="btn btn-success" id="paymentBtn">Thanh toán</button>
     </div>
   </div>
