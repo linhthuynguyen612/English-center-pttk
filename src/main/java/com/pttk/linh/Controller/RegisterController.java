@@ -56,7 +56,7 @@ public class RegisterController {
     }
 
     @PostMapping("/add-to-cart")
-    public ResponseEntity<List<Lophoc>> addToCart(@RequestBody Map<String, List<String>> payload, HttpSession session) {
+    public ResponseEntity<?> addToCart(@RequestBody Map<String, List<String>> payload, HttpSession session) {
         Member member = (Member) session.getAttribute("currentMember");
         long memberId = member.getId();
         List<Registration> registrations = this.registrationDAO.findByMemberId(memberId);
@@ -67,12 +67,18 @@ public class RegisterController {
             lophocAddToCart.add(lophoc);
         }
 
-        // check xem lịch bắt đầu học của lophocAddToCart đã bắt đầu trước hiện tại chưa
+        // Kiểm tra thời gian bắt đầu khóa học
         for (Lophoc lophoc : lophocAddToCart) {
             if (lophoc.getStartDate().getTime() < System.currentTimeMillis()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+                Map<String, String> response = new HashMap<>();
+                response.put("error", "Khóa học đã bắt đầu, không thể đăng ký");
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(response);
             }
         }
+
+        // Kiểm tra trùng lịch học
         for (Registration registration : registrations) {
             for (Lophoc lophoc : lophocAddToCart) {
                 for (Lesson lessonAddToCart : lophoc.getLessons()) {
@@ -83,7 +89,11 @@ public class RegisterController {
                                 &&
                                 lessonAddToCart.getShift().getEndTime()
                                         .equals(registeredLesson.getShift().getEndTime())) {
-                            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+                            Map<String, String> response = new HashMap<>();
+                            response.put("error", "Trùng lịch học với khóa học đã đăng ký");
+                            return ResponseEntity
+                                    .status(HttpStatus.CONFLICT)
+                                    .body(response);
                         }
                     }
                 }
@@ -91,13 +101,11 @@ public class RegisterController {
         }
 
         session.setAttribute("class-add-to-cart", lophocAddToCart);
-
-        // Xử lý logic
         return ResponseEntity.ok(lophocAddToCart);
     }
 
     @PostMapping("/register-now")
-    public ResponseEntity<List<Registration>> registerNow(@RequestBody Map<String, List<String>> payload,
+    public ResponseEntity<?> registerNow(@RequestBody Map<String, List<String>> payload,
             HttpSession session) {
         Member member = (Member) session.getAttribute("currentMember");
         long memberId = member.getId();
@@ -109,12 +117,18 @@ public class RegisterController {
             lophocAddToCart.add(lophoc);
         }
 
-        // check xem lịch bắt đầu học của lophocAddToCart đã bắt đầu trước hiện tại chưa
+        // Kiểm tra thời gian bắt đầu khóa học
         for (Lophoc lophoc : lophocAddToCart) {
             if (lophoc.getStartDate().getTime() < System.currentTimeMillis()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+                Map<String, String> response = new HashMap<>();
+                response.put("error", "Khóa học đã bắt đầu, không thể đăng ký");
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(response);
             }
         }
+
+        // Kiểm tra trùng lịch học
         for (Registration registration : registrations) {
             for (Lophoc lophoc : lophocAddToCart) {
                 for (Lesson lessonAddToCart : lophoc.getLessons()) {
@@ -125,7 +139,11 @@ public class RegisterController {
                                 &&
                                 lessonAddToCart.getShift().getEndTime()
                                         .equals(registeredLesson.getShift().getEndTime())) {
-                            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+                            Map<String, String> response = new HashMap<>();
+                            response.put("error", "Trùng lịch học với khóa học đã đăng ký");
+                            return ResponseEntity
+                                    .status(HttpStatus.CONFLICT)
+                                    .body(response);
                         }
                     }
                 }
@@ -137,15 +155,12 @@ public class RegisterController {
             Registration registration = new Registration();
             registration.setMember(member);
             registration.setLophoc(lophoc);
-            // registration.setId();
             registration.setDate(new Date(System.currentTimeMillis()));
             registration.setTime(new Time(System.currentTimeMillis()));
             newRegistrations.add(registration);
-            // this.registrationDAO.InsertRegistration(registration);
-
         }
         session.setAttribute("confirm-registration", newRegistrations);
-        return ResponseEntity.ok(registrations);
+        return ResponseEntity.ok(newRegistrations);
     }
 
     @GetMapping("/api/class-add-to-cart")

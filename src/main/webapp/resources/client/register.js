@@ -79,7 +79,11 @@ $(document).ready(() => {
                     row.appendChild(cell3);
 
                     var cell4 = document.createElement('td');
-                    cell4.innerText = new Date(lophoc.startDate).toLocaleDateString();
+                    var date = new Date(lophoc.startDate);
+                    var day = String(date.getDate()).padStart(2, '0');
+                    var month = String(date.getMonth() + 1).padStart(2, '0');
+                    var year = date.getFullYear();
+                    cell4.innerText = day + '/' + month + '/' + year;
                     row.appendChild(cell4);
 
                     var cell5 = document.createElement('td');
@@ -184,20 +188,25 @@ $(document).ready(() => {
                 url: endpoint,
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ classes: data }), // Gửi danh sách các lớp học
+                data: JSON.stringify({ classes: data }),
             });
             console.log(`API "${endpoint}" gọi thành công:`, response);
-            console.log("re:", redirectUrl);
             if (redirectUrl) {
                 console.log(`Chuyển hướng đến: ${redirectUrl}`);
                 setTimeout(function() {
-                    window.location.href = redirectUrl; // Chuyển hướng sau khi alert được đóng
-                }, 100); // Đợi 100ms sau khi alert được hiển thị
+                    window.location.href = redirectUrl;
+                }, 100);
             }
-            // alert("Thao tác thành công!");
+            alert("Thao tác thành công!");
 
         } catch (error) {
             console.error(`API "${endpoint}" lỗi:`, error);
+            if (error.status === 409) {
+                const errorMessage = error.responseJSON?.error || "Có lỗi xảy ra, vui lòng thử lại.";
+                alert(errorMessage);
+                return;
+            }
+            
             alert("Có lỗi xảy ra, vui lòng thử lại.");
         }
     }

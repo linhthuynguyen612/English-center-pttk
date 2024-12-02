@@ -36,12 +36,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 offset-md-3 text-center">
-            <c:forEach items="${registrations}" var="registration">
-                <p> Ngày đăng ký:  ${registration.date}</p>
-                <p> Khóa học: ${registration.lophoc.level.course.name}</p>
-            </c:forEach>
-        </div>
     </div>
 </div>
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,8 +41,8 @@
                         <td>${registration.lophoc.level.course.name}</td>
                         <td>${registration.lophoc.level.name}</td>
                         <td>${registration.lophoc.name}</td>
-                        <td>${registration.date}</td>
-                        <td>${registration.lophoc.startDate}</td>
+                        <td><fmt:formatDate pattern="dd/MM/yyyy" value="${registration.date}"/></td>
+                        <td><fmt:formatDate pattern="dd/MM/yyyy" value="${registration.lophoc.startDate}"/></td>
                         <td><a href="#" class="schedule-registration" data-lophoc-name="${registration.lophoc.name}">Lịch học</a></td>
                     </tr>
                 </c:forEach>
